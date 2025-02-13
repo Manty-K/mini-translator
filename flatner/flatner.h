@@ -5,6 +5,8 @@
 void programStart();
 void programEnd();
 
+void printStatement();
+
 void bodyStart();
 void bodyEnd();
 

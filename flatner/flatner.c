@@ -1,8 +1,12 @@
 #include "flatner.h"
 
-int blockNo = 0;
+typedef struct
+{
+    int no;
+    int depth;
+} BLOCK;
 
-int blockDepth = 0;
+BLOCK block;
 
 char *outputFileName = NULL;
 FILE *fp;
@@ -21,6 +25,19 @@ void programStart()
 {
     openOutfile();
     fprintf(fp, "Program Start\n");
+    block.no = 0;
+    block.depth = 0;
+}
+
+void getBlockStatus()
+{
+
+    fprintf(fp, "No: %d, Dept : %d\n", block.no, block.depth);
+}
+
+void printStatement()
+{
+    getBlockStatus();
 }
 
 void bodyStart()
