@@ -1,14 +1,11 @@
+#include <stdio.h>
 #ifndef FLATNER_H
 
+// Output File
 void programStart();
 void programEnd();
 
-void openOutfile(char *);
-
-void closeOutfile();
-
 void bodyStart();
-
 void bodyEnd();
 
 #endif

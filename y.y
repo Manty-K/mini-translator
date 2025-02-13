@@ -6,6 +6,7 @@
     #include "flatner/flatner.h"
 
     extern FILE * yyin;
+    extern char *outputFileName;
     int yylex();
     void yyerror(char*);
 %}
@@ -93,7 +94,6 @@ void showUsage(char* progName){
 int main(int argc, char **argv){
     int opt;
     char * inputFileName = NULL;
-    char * outputFileName = NULL;
 
 
     while ((opt = getopt(argc, argv, "i:o:h")) != -1){
@@ -127,19 +127,13 @@ int main(int argc, char **argv){
         exit(EXIT_FAILURE);
     }
 
-
-    openOutfile(outputFileName);
     programStart();
     yyparse();
     programEnd();
 
-    closeOutfile();
-
-
     if(yyin != stdin){
         fclose(yyin);
     }
-    free(outputFileName);
 
 
     return 0;
