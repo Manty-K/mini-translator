@@ -1,4 +1,4 @@
-
+#ifndef ARRAY_H
 typedef struct
 {
 
@@ -20,3 +20,5 @@ void *popElementArray(ARRAY *);
 
 char isEmptyArray(ARRAY *array);
 void freeArray(ARRAY *);
+
+#endif

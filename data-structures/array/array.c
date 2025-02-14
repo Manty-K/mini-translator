@@ -61,54 +61,55 @@ void appendArray(ARRAY *array, void *data)
         }
         array->ptr[array->filled++] = data;
     }
+}
 
-    void *getElementArray(ARRAY * array, int index)
+void *getElementArray(ARRAY *array, int index)
+{
+    if (array == NULL || index >= array->filled)
     {
-        if (array == NULL || index >= array->filled)
-        {
-            fprintf(stderr, "Invalid array or index out of bounds.\n");
-            return NULL;
-        }
-        return array->ptr[index];
+        fprintf(stderr, "Invalid array or index out of bounds.\n");
+        return NULL;
+    }
+    return array->ptr[index];
+}
+
+void setElementArray(ARRAY *array, int index, void *data)
+{
+    if (array == NULL || index >= array->cap)
+    {
+        fprintf(stderr, "Cannot set out of capacity\n");
+        return;
     }
 
-    void setElementArray(ARRAY * array, int index, void *data)
+    array->ptr[index] = data;
+}
+
+void *popElementArray(ARRAY *array)
+{
+    if (array == NULL || isEmptyArray(array))
     {
-        if (array == NULL || index >= array->cap)
-        {
-            fprintf(stderr, "Cannot set out of capacity\n");
-            return;
-        }
-
-        array->ptr[index] = data;
+        fprintf(stderr, "Array empty cannot pop.\n");
+        return NULL;
     }
+    return array->ptr[--array->filled];
+}
 
-    void *popElementArray(ARRAY * array)
+void freeArray(ARRAY *array, void (*free_func)(void *))
+{
+    if (array == NULL)
+        return;
+    if (free_func != NULL)
     {
-        if (array == NULL || isEmptyArray(array))
+        for (int i = 0; i < array->filled; i++)
         {
-            fprintf(stderr, "Array empty cannot pop.\n");
-            return NULL;
+            free_func(array->ptr[i]);
         }
-        return array->ptr[--array->filled];
     }
+    free(array->ptr);
+    free(array);
+}
 
-    void freeArray(ARRAY * array, void (*free_func)(void *))
-    {
-        if (array == NULL)
-            return;
-        if (free_func != NULL)
-        {
-            for (int i = 0; i < array->filled; i++)
-            {
-                free_func(array->ptr[i]);
-            }
-        }
-        free(array->ptr);
-        free(array);
-    }
-
-    // void free_int(void *data)
-    // {
-    //     free(data);
-    // }
+// void free_int(void *data)
+// {
+//     free(data);
+// }
