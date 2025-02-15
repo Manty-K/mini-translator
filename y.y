@@ -44,7 +44,7 @@ expbody: LPAREN expr  RPAREN body
 
 body: {bodyStart();} LCURL stmts RCURL {bodyEnd();} ;
 
-print: PRINT LABEL TERMINATOR  {printStatement();};
+print: PRINT LABEL TERMINATOR  {};
 
 
 

@@ -1,6 +1,6 @@
 #include <stdlib.h>
 #include <stdio.h>
-
+#include <string.h>
 #include "../data-structures/array/int_array.h"
 
 #include "block_info.h"

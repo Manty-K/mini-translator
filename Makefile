@@ -1,6 +1,6 @@
 CC = gcc
 CFLAGS = 
-DEPS = flatner/flatner.c flatner/block_info.c data-structures/array/array.c data-structures/array/int_array.c
+DEPS = flatner/flatner.c flatner/block_info.c  flatner/output.c data-structures/array/array.c data-structures/array/int_array.c
 
 all: e.o
 	./e.o -i input.txt -o output.txt

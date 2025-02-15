@@ -2,6 +2,7 @@
 // #include "../data-structures/array/array.h"
 #include "block_info.h"
 #include <stdlib.h>
+#include "output.h"
 
 typedef struct
 {
@@ -11,34 +12,17 @@ typedef struct
 
 BLOCK block;
 
-char *outputFileName = NULL;
-FILE *fp;
-
-void openOutfile()
-{
-    fp = fopen(outputFileName, "w");
-
-    if (fp == NULL)
-    {
-        fprintf(stderr, "File Open Error");
-    }
-}
-
 void programStart()
 {
     openOutfile();
-    fprintf(fp, "Program Start\n");
+    appendFile("/*Program Start*/\n");
     initializeBlockInfo();
-}
-
-void printStatement()
-{
 }
 
 void bodyStart()
 {
 
-    fprintf(fp, "Body Start\n");
+    appendFile("/*Body Start*/\n");
 
     blockOpen();
 }
@@ -47,16 +31,11 @@ void bodyEnd()
 {
     blockClosed();
 
-    fprintf(fp, "Body End\n");
-}
-
-void closeOutfile()
-{
-    fclose(fp);
+    appendFile("/*Body End*/\n");
 }
 
 void programEnd()
 {
-    fprintf(fp, "Program End\n");
+    appendFile("/*Program End*/\n");
     closeOutfile();
 }
