@@ -11,6 +11,11 @@ typedef struct
 
 ARRAY *createArray(int capacity)
 {
+    if (capacity <= 0)
+    {
+        fprintf(stderr, "Invalid capacity: %d\n", capacity);
+        return NULL;
+    }
     ARRAY *arr = malloc(sizeof(ARRAY));
     if (arr == NULL)
     {
@@ -33,17 +38,6 @@ char isEmptyArray(ARRAY *array)
     return array == NULL || array->filled == 0;
 }
 
-void *getNewArrayPtr(size_t newSize)
-{
-    void *newPtr = malloc(sizeof(void *) * newSize);
-    if (newPtr == NULL)
-    {
-        perror("malloc failed");
-        return NULL;
-    }
-    return newPtr;
-}
-
 void appendArray(ARRAY *array, void *data)
 {
     if (array == NULL)
@@ -51,23 +45,30 @@ void appendArray(ARRAY *array, void *data)
 
     if (array->filled == array->cap)
     {
-        void *newPtr = realloc(array->ptr, sizeof(void *) * array->cap * 2);
+        int newCap = array->cap * 2;
+        if (newCap < array->cap)
+        {
+            fprintf(stderr, "Array capacity overflow.\n");
+            return;
+        }
+        void **newPtr = realloc(array->ptr, sizeof(void *) * newCap);
         if (newPtr == NULL)
         {
             fprintf(stderr, "realloc failed!\n");
             return;
-            array->ptr = newPtr;
-            array->cap *= 2;
         }
-        array->ptr[array->filled++] = data;
+        array->ptr = newPtr;
+        array->cap = newCap;
     }
+    array->ptr[array->filled++] = data;
 }
 
 void *getElementArray(ARRAY *array, int index)
 {
-    if (array == NULL || index >= array->filled)
+    if (array == NULL || index >= array->filled || index < 0)
     {
-        fprintf(stderr, "Invalid array or index out of bounds.\n");
+        fprintf(stderr, "Index %d out of bounds. Filled: %d, Cap: %d\n",
+                index, array ? array->filled : -1, array ? array->cap : -1);
         return NULL;
     }
     return array->ptr[index];
@@ -75,7 +76,7 @@ void *getElementArray(ARRAY *array, int index)
 
 void setElementArray(ARRAY *array, int index, void *data)
 {
-    if (array == NULL || index >= array->cap)
+    if (array == NULL || index >= array->filled)
     {
         fprintf(stderr, "Cannot set out of capacity\n");
         return;
