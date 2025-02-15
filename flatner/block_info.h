@@ -1,5 +1,3 @@
-
-
 #ifndef BLOCK_INFO_H
 
 void initializeBlockInfo();
