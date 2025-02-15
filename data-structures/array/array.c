@@ -108,8 +108,3 @@ void freeArray(ARRAY *array, void (*free_func)(void *))
     free(array->ptr);
     free(array);
 }
-
-// void free_int(void *data)
-// {
-//     free(data);
-// }

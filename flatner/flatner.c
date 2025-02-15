@@ -1,4 +1,7 @@
 #include "flatner.h"
+// #include "../data-structures/array/array.h"
+#include "../data-structures/array/int_array.h"
+#include <stdlib.h>
 
 typedef struct
 {
@@ -10,6 +13,9 @@ BLOCK block;
 
 char *outputFileName = NULL;
 FILE *fp;
+
+INTARRAY *indentArray;
+int indentDept = 0;
 
 void openOutfile()
 {
@@ -25,29 +31,55 @@ void programStart()
 {
     openOutfile();
     fprintf(fp, "Program Start\n");
-    block.no = 0;
-    block.depth = 0;
+
+    indentArray = createIntArray(1);
+
+    puts("Started");
 }
 
 void getBlockStatus()
 {
+    for (int i = 0; i < getArraySize(indentArray); i++)
+    {
 
-    fprintf(fp, "No: %d, Dept : %d\n", block.no, block.depth);
+        fprintf(fp, "%d ", getIntElementArray(indentArray, i));
+    }
+
+    fprintf(fp, "\n");
 }
 
 void printStatement()
 {
-    getBlockStatus();
+    // temporary
+    // getBlockStatus();
 }
 
 void bodyStart()
 {
+
     fprintf(fp, "Body Start\n");
+
+    if (getArraySize(indentArray) <= indentDept)
+    {
+        appendIntArray(indentArray, 1);
+    }
+
+    indentDept++;
+    getBlockStatus();
 }
 
 void bodyEnd()
 {
+
     fprintf(fp, "Body End\n");
+    indentDept--;
+
+    setIntElementArray(indentArray, indentDept, getIntElementArray(indentArray, indentDept) + 1);
+
+    while (getArraySize(indentArray) > indentDept + 1)
+    {
+        popIntElementArray(indentArray);
+    }
 }
 
 void closeOutfile()
