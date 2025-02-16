@@ -11,6 +11,7 @@ ARRAY *instructionArray;
 ARRAY *declareArray;
 ARRAY *initializeArray;
 ARRAY *loopArray;
+ARRAY *conditionArray;
 
 void initializeStatement()
 {
@@ -21,6 +22,7 @@ void initializeStatement()
 
     initializeArray = createArray(1);
     loopArray = createArray(1);
+    conditionArray = createArray(1);
 }
 
 int typeStringToint(char *str)
@@ -131,6 +133,34 @@ void addLoopEndInstruction()
     appendArray(instructionArray, inst);
     incrementLoopCount();
 }
+
+void addConditionStartInstruction(TREENODE *node)
+{
+
+    CONDITION_BLOCK_START_INST conditionBlockStartInst;
+    conditionBlockStartInst.condition = node;
+
+    INSTRUCTION *inst = malloc(sizeof(INSTRUCTION));
+    inst->instruction_type = CONDITION_BLOCK_START;
+    inst->data.conditionStart = conditionBlockStartInst;
+    appendArray(instructionArray, inst);
+
+    // -- filling condition array separately
+
+    INSTRUCTION *lastInst = getElementArray(instructionArray, getArraySize(instructionArray) - 1);
+    appendArray(conditionArray, &(lastInst->data.conditionStart));
+}
+
+void addConditionEndInstruction()
+{
+    CONDITION_BLOCK_END_INST conditionBlockEnd;
+
+    INSTRUCTION *inst = malloc(sizeof(INSTRUCTION));
+    inst->instruction_type = CONDITION_BLOCK_END;
+    inst->data.conditionBlockEnd = conditionBlockEnd;
+    appendArray(instructionArray, inst);
+}
+
 void printChar(void *s)
 {
     printf("%s\n", (char *)s);
@@ -159,6 +189,17 @@ void displayLoopEndInsruction(LOOP_BLOCK_END_INST instruction)
     printf("%s \n", instruction.blockName);
 }
 
+void displayConditionStartInsruction(CONDITION_BLOCK_START_INST instruction)
+{
+    printf("if\n");
+    displayTree(instruction.condition, printChar);
+}
+
+void displayConditionEndInsruction(CONDITION_BLOCK_END_INST instruction)
+{
+    printf("end if\n");
+}
+
 void displayInstruction(INSTRUCTION *inst)
 {
     switch (inst->instruction_type)
@@ -175,6 +216,12 @@ void displayInstruction(INSTRUCTION *inst)
         break;
     case LOOP_BLOCK_END:
         displayLoopEndInsruction(inst->data.loopEnd);
+        break;
+    case CONDITION_BLOCK_START:
+        displayConditionStartInsruction(inst->data.conditionStart);
+        break;
+    case CONDITION_BLOCK_END:
+        displayConditionEndInsruction(inst->data.conditionBlockEnd);
         break;
     default:
         fprintf(stderr, "Invalid Type %d\n", inst->instruction_type);

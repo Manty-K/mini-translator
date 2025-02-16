@@ -67,8 +67,13 @@ void expressionEnd(int type)
     case LOOP_BLOCK_START:
         addLoopStartInstruction(currentTree);
         break;
+    case CONDITION_BLOCK_START:
+        addConditionStartInstruction(currentTree);
+        break;
 
     default:
+        fprintf(stderr, "Not defined\n");
+        exit(1);
         break;
     }
 

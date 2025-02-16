@@ -65,7 +65,7 @@ factor: NUMBER      {pushExpTree($1);}
 
 loop: WHILE   LPAREN {expressionStart();} expr {expressionEnd(LOOP_BLOCK_START);} RPAREN body {addLoopEndInstruction();}
 
-cond: IF  LPAREN expr  RPAREN body 
+cond: IF  LPAREN {expressionStart();} expr {expressionEnd(CONDITION_BLOCK_START);}  RPAREN body {addConditionEndInstruction();}
 
 type: INT | FLOAT | BOOL;
 

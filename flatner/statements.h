@@ -93,5 +93,7 @@ void displayInstructionArray();
 void addInitializeInstruction(char *label, TREENODE *node);
 void addLoopStartInstruction(TREENODE *node);
 void addLoopEndInstruction();
+void addConditionStartInstruction(TREENODE *node);
+void addConditionEndInstruction();
 
 #endif
