@@ -71,12 +71,12 @@ type: INT | FLOAT | BOOL;
 
 body: {bodyStart();} LCURL stmts RCURL {bodyEnd();} ;
 
-print: PRINT LPAREN printContent RPAREN TERMINATOR  {};
+print: PRINT LPAREN LABEL RPAREN TERMINATOR  {addPrintInstruction($3);};
 
 
-printContent: STRING                    {addPrintInstruction($1);}
-    | STRING variadicPrint              {addPrintInstruction($1);}           
-    ;
+// printContent: STRING                    {addPrintInstruction($1);}
+//     | STRING variadicPrint              {addPrintInstruction($1);}           
+//     ;
 
 variadicPrint:COMMA LABEL
     | COMMA LABEL variadicPrint
