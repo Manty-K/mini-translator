@@ -147,7 +147,7 @@ void displayInitializationInsruction(INITIALIZE_INST instruction)
     printf("%s // %s\n", instruction.label, instruction.scope);
     displayTree(instruction.data, printChar);
 }
-void displayLoopInsruction(LOOP_BLOCK_START_INST instruction)
+void displayLoopStartInsruction(LOOP_BLOCK_START_INST instruction)
 {
 
     printf("%s \n", instruction.blockName);
@@ -171,7 +171,7 @@ void displayInstruction(INSTRUCTION *inst)
         displayInitializationInsruction(inst->data.initialize);
         break;
     case LOOP_BLOCK_START:
-        displayLoopInsruction(inst->data.loopStart);
+        displayLoopStartInsruction(inst->data.loopStart);
         break;
     case LOOP_BLOCK_END:
         displayLoopEndInsruction(inst->data.loopEnd);
