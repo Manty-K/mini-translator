@@ -27,16 +27,16 @@ void initializeBlockInfo()
     indentArray = createIntArray(1);
 }
 
-void getBlockStatus()
-{
-    for (int i = 0; i < getArraySize(indentArray); i++)
-    {
+// void getBlockStatus()
+// {
+//     for (int i = 0; i < getArraySize(indentArray); i++)
+//     {
 
-        printf("%d ", getIntElementArray(indentArray, i));
-    }
+//         printf("%d ", getIntElementArray(indentArray, i));
+//     }
 
-    printf("\n");
-}
+//     printf("\n");
+// }
 
 void blockOpen()
 {
@@ -47,7 +47,7 @@ void blockOpen()
 
     indentDept++;
 
-    printf("%s\n", getBlockString());
+    // printf("%s\n", getBlockString());
 }
 
 void blockClosed()

@@ -30,7 +30,7 @@ stmts: stmt stmts
 
 stmt: decl | assign | loop | cond | print
 
-decl: type  LABEL TERMINATOR ;
+decl: type LABEL TERMINATOR  {addDeclareInstruction(typeStringToint($1), $2);};
 
 assign:  LABEL ASG expr TERMINATOR ;
 

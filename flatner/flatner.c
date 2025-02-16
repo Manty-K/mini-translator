@@ -17,6 +17,7 @@ void programStart()
     openOutfile();
     appendFile("/*Program Start*/\n");
     initializeBlockInfo();
+    initializeStatement();
 }
 
 void bodyStart()
@@ -36,6 +37,7 @@ void bodyEnd()
 
 void programEnd()
 {
+    displayInstructionArray();
     appendFile("/*Program End*/\n");
     closeOutfile();
 }
