@@ -3,6 +3,7 @@
 #include "block_info.h"
 #include <stdlib.h>
 #include "output.h"
+#include "instructions_processing.h"
 
 typedef struct
 {
@@ -37,7 +38,9 @@ void bodyEnd()
 
 void programEnd()
 {
-    displayInstructionArray();
+    // displayInstructionArray();
+    processInstructions();
+
     appendFile("/*Program End*/\n");
     closeOutfile();
 }

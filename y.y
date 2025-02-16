@@ -78,8 +78,8 @@ print: PRINT LPAREN LABEL RPAREN TERMINATOR  {addPrintInstruction($3);};
 //     | STRING variadicPrint              {addPrintInstruction($1);}           
 //     ;
 
-variadicPrint:COMMA LABEL
-    | COMMA LABEL variadicPrint
+// variadicPrint:COMMA LABEL
+//     | COMMA LABEL variadicPrint
 
 cmp: LT|MT|LE|ME|EQ|NE;
 

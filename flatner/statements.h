@@ -12,7 +12,6 @@ typedef struct declareInst
 {
     int varType; // enum varType
     char *identifier;
-    char *scope;
 
 } DECLARE_INST;
 
@@ -21,7 +20,6 @@ typedef struct initializeInst
 {
     char *label;
     TREENODE *data;
-    char *scope;
 } INITIALIZE_INST;
 
 // LOOP
@@ -85,6 +83,7 @@ typedef struct instruction
 {
     int instruction_type;
     INSTRUCTION_DATA data;
+    char *scope;
 } INSTRUCTION;
 void initializeStatement();
 void addDeclareInstruction(int type, char *identifier);

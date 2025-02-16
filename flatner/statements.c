@@ -73,17 +73,17 @@ void addDeclareInstruction(int type, char *identifier)
     DECLARE_INST declare;
     declare.identifier = identifier;
     declare.varType = type;
-    declare.scope = getBlockString();
 
     INSTRUCTION *inst = malloc(sizeof(INSTRUCTION));
     inst->instruction_type = DECLARE;
     inst->data.declare = declare;
+    inst->scope = getBlockString();
     appendArray(instructionArray, inst);
 
     // -- filling declare array separately
 
     INSTRUCTION *lastInst = getElementArray(instructionArray, getArraySize(instructionArray) - 1);
-    appendArray(declareArray, &(lastInst->data.declare));
+    appendArray(declareArray, lastInst);
 }
 
 void addInitializeInstruction(char *label, TREENODE *node)
@@ -91,11 +91,11 @@ void addInitializeInstruction(char *label, TREENODE *node)
     INITIALIZE_INST initialize_inst;
     initialize_inst.label = label;
     initialize_inst.data = node;
-    initialize_inst.scope = getBlockString();
 
     INSTRUCTION *inst = malloc(sizeof(INSTRUCTION));
     inst->instruction_type = INITIALIZE;
     inst->data.initialize = initialize_inst;
+    inst->scope = getBlockString();
     appendArray(instructionArray, inst);
 
     // -- filling initialize array separately
@@ -114,6 +114,8 @@ void addLoopStartInstruction(TREENODE *node)
     INSTRUCTION *inst = malloc(sizeof(INSTRUCTION));
     inst->instruction_type = LOOP_BLOCK_START;
     inst->data.loopStart = loopBlockStartInst;
+    inst->scope = getBlockString();
+
     appendArray(instructionArray, inst);
 
     // -- filling loop array separately
@@ -130,6 +132,7 @@ void addLoopEndInstruction()
     INSTRUCTION *inst = malloc(sizeof(INSTRUCTION));
     inst->instruction_type = LOOP_BLOCK_END;
     inst->data.loopEnd = loopBlockEnd;
+    inst->scope = getBlockString();
     appendArray(instructionArray, inst);
     incrementLoopCount();
 }
@@ -143,6 +146,7 @@ void addConditionStartInstruction(TREENODE *node)
     INSTRUCTION *inst = malloc(sizeof(INSTRUCTION));
     inst->instruction_type = CONDITION_BLOCK_START;
     inst->data.conditionStart = conditionBlockStartInst;
+    inst->scope = getBlockString();
     appendArray(instructionArray, inst);
 
     // -- filling condition array separately
@@ -160,6 +164,7 @@ void addPrintInstruction(char *data)
     INSTRUCTION *inst = malloc(sizeof(INSTRUCTION));
     inst->instruction_type = PRINTS;
     inst->data.print = printInst;
+    inst->scope = getBlockString();
     appendArray(instructionArray, inst);
 }
 
@@ -170,6 +175,7 @@ void addConditionEndInstruction()
     INSTRUCTION *inst = malloc(sizeof(INSTRUCTION));
     inst->instruction_type = CONDITION_BLOCK_END;
     inst->data.conditionBlockEnd = conditionBlockEnd;
+    inst->scope = getBlockString();
     appendArray(instructionArray, inst);
 }
 
@@ -180,13 +186,13 @@ void printChar(void *s)
 
 void displayDeclareInsruction(DECLARE_INST instruction)
 {
-    printf("%s %s; // %s\n", typeIntToString(instruction.varType), instruction.identifier, instruction.scope);
+    printf("%s %s; \n", typeIntToString(instruction.varType), instruction.identifier);
 }
 
 void displayInitializationInsruction(INITIALIZE_INST instruction)
 {
 
-    printf("%s // %s\n", instruction.label, instruction.scope);
+    printf("%s\n", instruction.label);
     displayTree(instruction.data, printChar);
 }
 void displayLoopStartInsruction(LOOP_BLOCK_START_INST instruction)
@@ -219,6 +225,8 @@ void displayPrintInsruction(PRINT_INST instruction)
 
 void displayInstruction(INSTRUCTION *inst)
 {
+
+    printf("SCOPE :%s\n", inst->scope);
     switch (inst->instruction_type)
     {
     case DECLARE:
