@@ -12,7 +12,7 @@
 %}
 
 
-%token <s> INT FLOAT BOOL NUMBER LABEL ASG TERMINATOR  IF WHILE LCURL RCURL  LPAREN RPAREN LE ME LT MT EQ NE PLUS MINUS MUL DIV AND OR NOT PRINT STRING
+%token <s> INT FLOAT BOOL NUMBER LABEL ASG TERMINATOR  IF WHILE LCURL RCURL  LPAREN RPAREN LE ME LT MT EQ NE PLUS MINUS MUL DIV AND OR NOT PRINT STRING COMMA
 
 %type <s> type cmp logicB term factor
 
@@ -44,9 +44,15 @@ expbody: LPAREN expr  RPAREN body
 
 body: {bodyStart();} LCURL stmts RCURL {bodyEnd();} ;
 
-print: PRINT LPAREN STRING RPAREN TERMINATOR  {};
+print: PRINT LPAREN printContent RPAREN TERMINATOR  {};
 
 
+printContent: STRING
+    | STRING variadicPrint
+    ;
+
+variadicPrint:COMMA LABEL
+    | COMMA LABEL variadicPrint
 
 aexpr: term
     | term PLUS aexpr

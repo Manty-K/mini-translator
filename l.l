@@ -50,6 +50,8 @@
 "||"    { yylval.s = strdup(yytext);  return OR;}
 "!"     { yylval.s = strdup(yytext);  return NOT;}
 
+","     { yylval.s = strdup(yytext);  return COMMA;}
+
 
 
 [0-9]+(\.[0-9]+)?      { yylval.s = strdup(yytext);  return NUMBER;}
