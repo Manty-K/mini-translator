@@ -91,8 +91,9 @@ void processPrint()
 {
     int printCount = getArraySize(printArray);
 
-    for (int i = printCount - 1; i >= 0; i--)
+    for (int i = 0; i < printCount; i++)
     {
+        int found = 0;
         INSTRUCTION *pinst = getElementArray(printArray, i);
 
         PRINT_INST printInst = pinst->data.print;
@@ -109,9 +110,15 @@ void processPrint()
                 if (is_child(inst->scope, pinst->scope))
                 {
                     printf("%s at line %d can be taken\n", inst->data.declare.identifier, inst->lineNo);
+                    found = 1;
                     break;
                 }
             }
+        }
+        if (!found)
+        {
+            fprintf(stderr, "'%s' not declared (Instruction no: %d).\n", printInst.data, pinst->lineNo);
+            exit(1);
         }
     }
 }
