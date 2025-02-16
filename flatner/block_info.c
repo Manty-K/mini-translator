@@ -3,23 +3,10 @@
 #include <string.h>
 #include "../data-structures/array/array.h"
 #include "block_info.h"
+#include "utils.h"
 
 ARRAY *indentArray;
 int indentDept = 0;
-
-int getIntLength(int num)
-{
-    if (num == 0)
-        return 1;
-
-    int length = 0;
-    while (num)
-    {
-        num /= 10;
-        length++;
-    }
-    return length;
-}
 
 void initializeBlockInfo()
 {

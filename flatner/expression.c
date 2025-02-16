@@ -56,10 +56,21 @@ void pushExpTree(char *data)
     pushStack(expstack, currentTree);
 }
 
-void expressionEnd()
+void expressionEnd(int type)
 {
-    // displayTree(currentTree, printChar);
 
-    addInitializeInstruction(identifier, currentTree);
+    switch (type)
+    {
+    case INITIALIZE:
+        addInitializeInstruction(identifier, currentTree);
+        break;
+    case LOOP_BLOCK_START:
+        addLoopStartInstruction(currentTree);
+        break;
+
+    default:
+        break;
+    }
+
     freeStack(expstack);
 }

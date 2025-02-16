@@ -33,7 +33,7 @@ stmt: decl | assign | loop | cond | print
 
 decl: type LABEL TERMINATOR  {addDeclareInstruction(typeStringToint($1), $2);};
 
-assign:  LABEL {setIndentifier($1);}ASG {expressionStart();} expr {expressionEnd();}TERMINATOR ;
+assign:  LABEL {setIndentifier($1);}ASG {expressionStart();} expr {expressionEnd(INITIALIZE);}TERMINATOR ;
 
 expr : d 
     | expr logicB  d             {pushExpTree($2);}
@@ -63,13 +63,11 @@ factor: NUMBER      {pushExpTree($1);}
 
 
 
-loop: WHILE expbody 
+loop: WHILE   LPAREN {expressionStart();} expr {expressionEnd(LOOP_BLOCK_START);} RPAREN body {addLoopEndInstruction();}
 
-cond: IF expbody 
+cond: IF  LPAREN expr  RPAREN body 
 
 type: INT | FLOAT | BOOL;
-
-expbody: LPAREN expr  RPAREN body 
 
 body: {bodyStart();} LCURL stmts RCURL {bodyEnd();} ;
 

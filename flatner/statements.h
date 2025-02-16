@@ -91,5 +91,7 @@ void addDeclareInstruction(int type, char *identifier);
 int typeStringToint(char *str);
 void displayInstructionArray();
 void addInitializeInstruction(char *label, TREENODE *node);
+void addLoopStartInstruction(TREENODE *node);
+void addLoopEndInstruction();
 
 #endif

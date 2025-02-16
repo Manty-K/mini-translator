@@ -4,11 +4,13 @@
 #include <string.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include "loopCounter.h"
 
 ARRAY *instructionArray;
 
 ARRAY *declareArray;
 ARRAY *initializeArray;
+ARRAY *loopArray;
 
 void initializeStatement()
 {
@@ -18,6 +20,7 @@ void initializeStatement()
     declareArray = createArray(1);
 
     initializeArray = createArray(1);
+    loopArray = createArray(1);
 }
 
 int typeStringToint(char *str)
@@ -98,12 +101,42 @@ void addInitializeInstruction(char *label, TREENODE *node)
     INSTRUCTION *lastInst = getElementArray(instructionArray, getArraySize(instructionArray) - 1);
     appendArray(initializeArray, &(lastInst->data.initialize));
 }
+
+void addLoopStartInstruction(TREENODE *node)
+{
+
+    LOOP_BLOCK_START_INST loopBlockStartInst;
+    loopBlockStartInst.blockName = getLoopName(START);
+    loopBlockStartInst.condition = node;
+
+    INSTRUCTION *inst = malloc(sizeof(INSTRUCTION));
+    inst->instruction_type = LOOP_BLOCK_START;
+    inst->data.loopStart = loopBlockStartInst;
+    appendArray(instructionArray, inst);
+
+    // -- filling loop array separately
+
+    INSTRUCTION *lastInst = getElementArray(instructionArray, getArraySize(instructionArray) - 1);
+    appendArray(loopArray, &(lastInst->data.loopStart));
+}
+
+void addLoopEndInstruction()
+{
+    LOOP_BLOCK_END_INST loopBlockEnd;
+    loopBlockEnd.blockName = getLoopName(END);
+
+    INSTRUCTION *inst = malloc(sizeof(INSTRUCTION));
+    inst->instruction_type = LOOP_BLOCK_END;
+    inst->data.loopEnd = loopBlockEnd;
+    appendArray(instructionArray, inst);
+    incrementLoopCount();
+}
 void printChar(void *s)
 {
     printf("%s\n", (char *)s);
 }
 
-void displayDeclateInsruction(DECLARE_INST instruction)
+void displayDeclareInsruction(DECLARE_INST instruction)
 {
     printf("%s %s; // %s\n", typeIntToString(instruction.varType), instruction.identifier, instruction.scope);
 }
@@ -114,19 +147,35 @@ void displayInitializationInsruction(INITIALIZE_INST instruction)
     printf("%s // %s\n", instruction.label, instruction.scope);
     displayTree(instruction.data, printChar);
 }
+void displayLoopInsruction(LOOP_BLOCK_START_INST instruction)
+{
+
+    printf("%s \n", instruction.blockName);
+    displayTree(instruction.condition, printChar);
+}
+
+void displayLoopEndInsruction(LOOP_BLOCK_END_INST instruction)
+{
+    printf("%s \n", instruction.blockName);
+}
 
 void displayInstruction(INSTRUCTION *inst)
 {
     switch (inst->instruction_type)
     {
     case DECLARE:
-        displayDeclateInsruction(inst->data.declare);
+        displayDeclareInsruction(inst->data.declare);
         break;
 
     case INITIALIZE:
         displayInitializationInsruction(inst->data.initialize);
         break;
-
+    case LOOP_BLOCK_START:
+        displayLoopInsruction(inst->data.loopStart);
+        break;
+    case LOOP_BLOCK_END:
+        displayLoopEndInsruction(inst->data.loopEnd);
+        break;
     default:
         fprintf(stderr, "Invalid Type %d\n", inst->instruction_type);
         exit(1);
