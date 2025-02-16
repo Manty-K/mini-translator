@@ -1,14 +1,23 @@
 
 #include "../data-structures/stack/stack.h"
-#include "../data-structures/tree/tree.h"
+// #include "../data-structures/tree/tree.h"
 #include <stdlib.h>
 #include <stdio.h>
 #include <ctype.h>
 #include <string.h>
 #include "expression.h"
+#include "statements.h"
 
 STACK *expstack;
 TREENODE *currentTree;
+
+char *identifier;
+
+void setIndentifier(char *str)
+{
+
+    identifier = str;
+}
 
 unsigned int _getChildCountFromData(char *data)
 {
@@ -47,14 +56,10 @@ void pushExpTree(char *data)
     pushStack(expstack, currentTree);
 }
 
-void printChar(void *s)
-{
-
-    printf("%s\n", (char *)s);
-}
-
 void expressionEnd()
 {
-    displayTree(currentTree, printChar);
+    // displayTree(currentTree, printChar);
+
+    addInitializeInstruction(identifier, currentTree);
     freeStack(expstack);
 }

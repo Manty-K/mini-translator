@@ -33,7 +33,7 @@ stmt: decl | assign | loop | cond | print
 
 decl: type LABEL TERMINATOR  {addDeclareInstruction(typeStringToint($1), $2);};
 
-assign:  LABEL ASG {expressionStart();} expr {expressionEnd();}TERMINATOR ;
+assign:  LABEL {setIndentifier($1);}ASG {expressionStart();} expr {expressionEnd();}TERMINATOR ;
 
 expr : d 
     | expr logicB  d             {pushExpTree($2);}

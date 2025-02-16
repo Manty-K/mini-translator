@@ -21,6 +21,7 @@ typedef struct initializeInst
 {
     char *label;
     TREENODE *data;
+    char *scope;
 } INITIALIZE_INST;
 
 // LOOP
@@ -89,5 +90,6 @@ void initializeStatement();
 void addDeclareInstruction(int type, char *identifier);
 int typeStringToint(char *str);
 void displayInstructionArray();
+void addInitializeInstruction(char *label, TREENODE *node);
 
 #endif
