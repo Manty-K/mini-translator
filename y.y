@@ -74,8 +74,8 @@ body: {bodyStart();} LCURL stmts RCURL {bodyEnd();} ;
 print: PRINT LPAREN printContent RPAREN TERMINATOR  {};
 
 
-printContent: STRING
-    | STRING variadicPrint
+printContent: STRING                    {addPrintInstruction($1);}
+    | STRING variadicPrint              {addPrintInstruction($1);}           
     ;
 
 variadicPrint:COMMA LABEL

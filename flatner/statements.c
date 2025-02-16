@@ -151,6 +151,18 @@ void addConditionStartInstruction(TREENODE *node)
     appendArray(conditionArray, &(lastInst->data.conditionStart));
 }
 
+void addPrintInstruction(char *data)
+{
+
+    PRINT_INST printInst;
+    printInst.data = data;
+
+    INSTRUCTION *inst = malloc(sizeof(INSTRUCTION));
+    inst->instruction_type = PRINTS;
+    inst->data.print = printInst;
+    appendArray(instructionArray, inst);
+}
+
 void addConditionEndInstruction()
 {
     CONDITION_BLOCK_END_INST conditionBlockEnd;
@@ -200,6 +212,11 @@ void displayConditionEndInsruction(CONDITION_BLOCK_END_INST instruction)
     printf("end if\n");
 }
 
+void displayPrintInsruction(PRINT_INST instruction)
+{
+    printf("print %s\n", instruction.data);
+}
+
 void displayInstruction(INSTRUCTION *inst)
 {
     switch (inst->instruction_type)
@@ -222,6 +239,9 @@ void displayInstruction(INSTRUCTION *inst)
         break;
     case CONDITION_BLOCK_END:
         displayConditionEndInsruction(inst->data.conditionBlockEnd);
+        break;
+    case PRINTS:
+        displayPrintInsruction(inst->data.print);
         break;
     default:
         fprintf(stderr, "Invalid Type %d\n", inst->instruction_type);

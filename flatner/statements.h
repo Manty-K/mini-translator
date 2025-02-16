@@ -95,5 +95,6 @@ void addLoopStartInstruction(TREENODE *node);
 void addLoopEndInstruction();
 void addConditionStartInstruction(TREENODE *node);
 void addConditionEndInstruction();
+void addPrintInstruction(char *data);
 
 #endif
