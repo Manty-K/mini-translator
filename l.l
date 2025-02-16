@@ -5,6 +5,8 @@
 
 %%
 
+\"([^\"]*)\"			{ yylval.s = strndup(yytext+1,yyleng-2);return STRING; }
+
 "int"                   {yylval.s = strdup(yytext); return INT;}
 
 "float"                   {yylval.s = strdup(yytext); return FLOAT;}
