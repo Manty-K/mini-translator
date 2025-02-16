@@ -74,11 +74,8 @@ void addDeclareInstruction(int type, char *identifier)
 
     // -- filling declare array separately
 
-    DECLARE_INST *declare2 = malloc(sizeof(DECLARE_INST));
-    declare2->identifier = identifier;
-    declare2->varType = type;
-    // declare2->scope = getBlockString();
-    appendArray(declareArray, declare2);
+    INSTRUCTION *lastInst = getElementArray(instructionArray, getArraySize(instructionArray) - 1);
+    appendArray(declareArray, &(lastInst->data.declare));
 }
 
 void displayDeclateInsruction(DECLARE_INST instruction)
