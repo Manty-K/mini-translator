@@ -4,6 +4,7 @@
     #include <unistd.h>
     #include <string.h>
     #include "flatner/flatner.h"
+    #include "flatner/expression.h"
 
     extern FILE * yyin;
     extern char *outputFileName;
@@ -32,7 +33,35 @@ stmt: decl | assign | loop | cond | print
 
 decl: type LABEL TERMINATOR  {addDeclareInstruction(typeStringToint($1), $2);};
 
-assign:  LABEL ASG expr TERMINATOR ;
+assign:  LABEL ASG {expressionStart();} expr {expressionEnd();}TERMINATOR ;
+
+expr : d 
+    | expr logicB  d             {pushExpTree($2);}
+    ;
+
+d : c
+    | NOT  d             {pushExpTree($1);}
+    ;
+
+c: aexpr
+    |  aexpr cmp  c                  {pushExpTree($2);}
+    ;
+aexpr: term
+    | term PLUS aexpr                {pushExpTree($2);}
+    |  term MINUS  aexpr          {pushExpTree($2);}
+    ;
+
+term: factor
+    |  factor MUL term     {pushExpTree($2);}
+    | factor DIV term        {pushExpTree($2);}
+    ;
+
+factor: NUMBER      {pushExpTree($1);}
+    | LABEL  {pushExpTree($1);}
+    | LPAREN   expr RPAREN 
+    ;
+
+
 
 loop: WHILE expbody 
 
@@ -53,34 +82,6 @@ printContent: STRING
 
 variadicPrint:COMMA LABEL
     | COMMA LABEL variadicPrint
-
-aexpr: term
-    | term PLUS aexpr
-    |  term MINUS  aexpr;
-
-term: factor
-    |  factor MUL term
-    | factor DIV term
-    ;
-
-factor: NUMBER  
-    | LABEL  
-    | LPAREN   expr RPAREN 
-    ;
-
-
-c: aexpr
-    |  aexpr cmp  c
-    ;
-
-
-expr : {} d {}
-    | expr logicB  d
-    ;
-
-d : c
-    | NOT  d
-    ;
 
 cmp: LT|MT|LE|ME|EQ|NE;
 
