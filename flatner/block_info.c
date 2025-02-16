@@ -70,6 +70,7 @@ int totalLengthIndentArray()
 char *getBlockString()
 {
     char *output = (char *)malloc(totalLengthIndentArray());
+    // char *output = (char *)calloc(40, 1);
 
     int offset = 0;
 

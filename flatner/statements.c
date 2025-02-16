@@ -13,16 +13,18 @@ ARRAY *initializeArray;
 ARRAY *loopArray;
 ARRAY *conditionArray;
 
+ARRAY *printArray;
+
+unsigned int lineNo = 0;
+
 void initializeStatement()
 {
-
     instructionArray = createArray(1);
-
     declareArray = createArray(1);
-
     initializeArray = createArray(1);
     loopArray = createArray(1);
     conditionArray = createArray(1);
+    printArray = createArray(1);
 }
 
 int typeStringToint(char *str)
@@ -78,6 +80,8 @@ void addDeclareInstruction(int type, char *identifier)
     inst->instruction_type = DECLARE;
     inst->data.declare = declare;
     inst->scope = getBlockString();
+    inst->lineNo = lineNo;
+    lineNo++;
     appendArray(instructionArray, inst);
 
     // -- filling declare array separately
@@ -96,6 +100,8 @@ void addInitializeInstruction(char *label, TREENODE *node)
     inst->instruction_type = INITIALIZE;
     inst->data.initialize = initialize_inst;
     inst->scope = getBlockString();
+    inst->lineNo = lineNo;
+    lineNo++;
     appendArray(instructionArray, inst);
 
     // -- filling initialize array separately
@@ -115,7 +121,8 @@ void addLoopStartInstruction(TREENODE *node)
     inst->instruction_type = LOOP_BLOCK_START;
     inst->data.loopStart = loopBlockStartInst;
     inst->scope = getBlockString();
-
+    inst->lineNo = lineNo;
+    lineNo++;
     appendArray(instructionArray, inst);
 
     // -- filling loop array separately
@@ -133,6 +140,8 @@ void addLoopEndInstruction()
     inst->instruction_type = LOOP_BLOCK_END;
     inst->data.loopEnd = loopBlockEnd;
     inst->scope = getBlockString();
+    inst->lineNo = lineNo;
+    lineNo++;
     appendArray(instructionArray, inst);
     incrementLoopCount();
 }
@@ -147,6 +156,8 @@ void addConditionStartInstruction(TREENODE *node)
     inst->instruction_type = CONDITION_BLOCK_START;
     inst->data.conditionStart = conditionBlockStartInst;
     inst->scope = getBlockString();
+    inst->lineNo = lineNo;
+    lineNo++;
     appendArray(instructionArray, inst);
 
     // -- filling condition array separately
@@ -165,7 +176,13 @@ void addPrintInstruction(char *data)
     inst->instruction_type = PRINTS;
     inst->data.print = printInst;
     inst->scope = getBlockString();
+    inst->lineNo = lineNo;
+    lineNo++;
     appendArray(instructionArray, inst);
+
+    // -- filling loop array separately
+    INSTRUCTION *lastInst = getElementArray(instructionArray, getArraySize(instructionArray) - 1);
+    appendArray(printArray, lastInst);
 }
 
 void addConditionEndInstruction()
@@ -176,6 +193,8 @@ void addConditionEndInstruction()
     inst->instruction_type = CONDITION_BLOCK_END;
     inst->data.conditionBlockEnd = conditionBlockEnd;
     inst->scope = getBlockString();
+    inst->lineNo = lineNo;
+    lineNo++;
     appendArray(instructionArray, inst);
 }
 
@@ -226,7 +245,7 @@ void displayPrintInsruction(PRINT_INST instruction)
 void displayInstruction(INSTRUCTION *inst)
 {
 
-    printf("SCOPE :%s\n", inst->scope);
+    printf("Line : %u - SCOPE :%s\n", inst->lineNo, inst->scope);
     switch (inst->instruction_type)
     {
     case DECLARE:

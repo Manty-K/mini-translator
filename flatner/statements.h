@@ -81,9 +81,12 @@ enum instructionType
 
 typedef struct instruction
 {
+
     int instruction_type;
     INSTRUCTION_DATA data;
     char *scope;
+    unsigned int lineNo;
+
 } INSTRUCTION;
 void initializeStatement();
 void addDeclareInstruction(int type, char *identifier);

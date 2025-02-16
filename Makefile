@@ -1,5 +1,5 @@
 CC = gcc
-CFLAGS = 
+CFLAGS =  -g # -fsanitize=address 
 DEPS = flatner/flatner.c flatner/block_info.c flatner/unique_generator.c flatner/instructions_processing.c flatner/expression.c flatner/output.c flatner/utils.c flatner/loopCounter.c flatner/statements.c data-structures/array/array.c data-structures/tree/tree.c data-structures/stack/stack.c
 
 all: e.o
