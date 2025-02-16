@@ -1,11 +1,10 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
-#include "../data-structures/array/int_array.h"
-
+#include "../data-structures/array/array.h"
 #include "block_info.h"
 
-INTARRAY *indentArray;
+ARRAY *indentArray;
 int indentDept = 0;
 
 int getIntLength(int num)
@@ -24,25 +23,28 @@ int getIntLength(int num)
 
 void initializeBlockInfo()
 {
-    indentArray = createIntArray(1);
+    indentArray = createArray(1);
 }
 
-// void getBlockStatus()
-// {
-//     for (int i = 0; i < getArraySize(indentArray); i++)
-//     {
+void getBlockStatus()
+{
 
-//         printf("%d ", getIntElementArray(indentArray, i));
-//     }
+    for (int i = 0; i < getArraySize(indentArray); i++)
+    {
 
-//     printf("\n");
-// }
+        printf("%d ", *(int *)getElementArray(indentArray, i));
+    }
+
+    printf("\n");
+}
 
 void blockOpen()
 {
     if (getArraySize(indentArray) <= indentDept)
     {
-        appendIntArray(indentArray, 1);
+        int *one = malloc(sizeof(int));
+        *one = 1;
+        appendArray(indentArray, one);
     }
 
     indentDept++;
@@ -53,12 +55,14 @@ void blockOpen()
 void blockClosed()
 {
     indentDept--;
+    int *newVal = malloc(sizeof(int));
+    *newVal = *(int *)getElementArray(indentArray, indentDept) + 1;
 
-    setIntElementArray(indentArray, indentDept, getIntElementArray(indentArray, indentDept) + 1);
+    setElementArray(indentArray, indentDept, newVal);
 
     while (getArraySize(indentArray) > indentDept + 1)
     {
-        popIntElementArray(indentArray);
+        popElementArray(indentArray);
     }
 }
 
@@ -69,7 +73,7 @@ int totalLengthIndentArray()
 
     for (int i = 0; i < getArraySize(indentArray); i++)
     {
-        total += getIntLength(getIntElementArray(indentArray, i));
+        total += getIntLength(*(int *)getElementArray(indentArray, i));
     }
 
     total += getArraySize(indentArray) - 1; // for dots
@@ -82,9 +86,14 @@ char *getBlockString()
 
     int offset = 0;
 
-    for (int i = 0; i < getArraySize(indentArray); i++)
+    if (indentDept == 0)
     {
-        offset += sprintf(output + offset, "%d%s", getIntElementArray(indentArray, i), (i < getArraySize(indentArray) - 1) ? "." : "");
+        return "";
+    }
+
+    for (int i = 0; i < indentDept; i++)
+    {
+        offset += sprintf(output + offset, "%d%s", *(int *)getElementArray(indentArray, i), indentDept - i != 1 ? "_" : "");
     }
 
     return output;

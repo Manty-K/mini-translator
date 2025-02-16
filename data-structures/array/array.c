@@ -95,6 +95,11 @@ void *popElementArray(ARRAY *array)
     return array->ptr[--array->filled];
 }
 
+int getArraySize(ARRAY *arr)
+{
+    return arr->filled;
+}
+
 void freeArray(ARRAY *array, void (*free_func)(void *))
 {
     if (array == NULL)

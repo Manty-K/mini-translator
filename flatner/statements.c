@@ -1,4 +1,5 @@
 #include "statements.h"
+#include "block_info.h"
 #include "../data-structures/array/array.h"
 #include <string.h>
 #include <stdio.h>
@@ -6,10 +7,14 @@
 
 ARRAY *instructionArray;
 
+ARRAY *declareArray;
+
 void initializeStatement()
 {
 
     instructionArray = createArray(1);
+
+    declareArray = createArray(1);
 }
 
 int typeStringToint(char *str)
@@ -60,18 +65,26 @@ void addDeclareInstruction(int type, char *identifier)
     DECLARE_INST declare;
     declare.identifier = identifier;
     declare.varType = type;
+    declare.scope = getBlockString();
 
     INSTRUCTION *inst = malloc(sizeof(INSTRUCTION));
     inst->instruction_type = DECLARE;
     inst->data.declare = declare;
-
     appendArray(instructionArray, inst);
+
+    // -- filling declare array separately
+
+    DECLARE_INST *declare2 = malloc(sizeof(DECLARE_INST));
+    declare2->identifier = identifier;
+    declare2->varType = type;
+    // declare2->scope = getBlockString();
+    appendArray(declareArray, declare2);
 }
 
 void displayDeclateInsruction(DECLARE_INST instruction)
 {
 
-    printf("%s %s;\n", typeIntToString(instruction.varType), instruction.identifier);
+    printf("%s %s; // %s\n", typeIntToString(instruction.varType), instruction.identifier, instruction.scope);
 }
 
 void displayInstruction(INSTRUCTION *inst)
@@ -83,7 +96,7 @@ void displayInstruction(INSTRUCTION *inst)
         break;
 
     default:
-        fprintf("Invalid Type %d\n", inst->instruction_type);
+        fprintf(stderr, "Invalid Type %d\n", inst->instruction_type);
         exit(1);
         break;
     }

@@ -19,6 +19,7 @@ void setElementArray(ARRAY *, int, void *);
 void *popElementArray(ARRAY *);
 
 char isEmptyArray(ARRAY *array);
+int getArraySize(ARRAY *array);
 void freeArray(ARRAY *);
 
 #endif

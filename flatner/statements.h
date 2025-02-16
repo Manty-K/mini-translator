@@ -12,6 +12,7 @@ typedef struct declareInst
 {
     int varType; // enum varType
     char *identifier;
+    char *scope;
 
 } DECLARE_INST;
 
