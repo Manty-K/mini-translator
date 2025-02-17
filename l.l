@@ -12,7 +12,7 @@
 "float"                   {yylval.s = strdup(yytext); return FLOAT;}
 
 "bool"                   {yylval.s = strdup(yytext); return BOOL;}
-"printS"                     {yylval.s = strdup(yytext); return PRINTS;}
+
 
 "print"                     {yylval.s = strdup(yytext); return PRINT;}
 
