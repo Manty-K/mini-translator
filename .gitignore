@@ -6,4 +6,6 @@ reference/*
 *.yy.c
 *.tab.*
 
+output.*
+
 archive/
