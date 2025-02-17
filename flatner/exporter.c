@@ -103,13 +103,13 @@ void exportInstruction(INSTRUCTION *inst)
 void exportStartContent()
 {
 
-    appendFile("#include<stdio.h>\n int main(){\n");
+    appendFile("#include<stdio.h>\nint main(){\n");
 }
 
 void exportEndContent()
 {
 
-    appendFile("return 0;\n }");
+    appendFile("return 0;\n}");
 }
 
 void exportFile()
