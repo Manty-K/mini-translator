@@ -24,16 +24,22 @@ void exportInitializationInsruction(INSTRUCTION *instruction)
     displayTacQueue();
 }
 
-void exportLoopStartInsruction(LOOP_BLOCK_START_INST instruction)
+void exportLoopStartInsruction(INSTRUCTION *instruction)
 {
 
-    // printf("%s \n", instruction.blockName);
-    // exportTree(instruction.condition, printChar);
+    instruction->data.loopStart.conditioVar = getTempVarName();
+    generateTACFromTree(instruction->data.loopStart.conditioVar, instruction->data.loopStart.condition);
+    appendFile("%s:\n", instruction->data.loopStart.blockStart);
+    displayTacQueue();
+    appendFile("if(!%s)\n", instruction->data.loopStart.conditioVar);
+    appendFile("\tgoto %s;\n", instruction->data.loopStart.blockEnd);
 }
 
-void exportLoopEndInsruction(LOOP_BLOCK_END_INST instruction)
+void exportLoopEndInsruction(INSTRUCTION *instruction)
 {
     // printf("%s \n", instruction.blockName);
+    appendFile("goto %s;\n", instruction->data.loopEnd.blockStart);
+    appendFile("%s:\n", instruction->data.loopEnd.blockEnd);
 }
 
 void exportConditionStartInsruction(INSTRUCTION *instruction)
@@ -66,10 +72,10 @@ void exportInstruction(INSTRUCTION *inst)
         exportInitializationInsruction(inst);
         break;
     case LOOP_BLOCK_START:
-        exportLoopStartInsruction(inst->data.loopStart);
+        exportLoopStartInsruction(inst);
         break;
     case LOOP_BLOCK_END:
-        exportLoopEndInsruction(inst->data.loopEnd);
+        exportLoopEndInsruction(inst);
         break;
     case CONDITION_BLOCK_START:
         exportConditionStartInsruction(inst);

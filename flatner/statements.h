@@ -26,14 +26,16 @@ typedef struct initializeInst
 // LOOP
 typedef struct loopBlockStartInst
 {
-    char *blockName;
+    char *blockStart;
+    char *blockEnd;
     TREENODE *condition;
     char *conditioVar;
 } LOOP_BLOCK_START_INST;
 
 typedef struct loopBlockEnd
 {
-    char *blockName;
+    char *blockStart;
+    char *blockEnd;
 } LOOP_BLOCK_END_INST;
 
 // Condition

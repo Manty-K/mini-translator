@@ -114,7 +114,8 @@ void addLoopStartInstruction(TREENODE *node)
 {
 
     LOOP_BLOCK_START_INST loopBlockStartInst;
-    loopBlockStartInst.blockName = getLoopName(START);
+    loopBlockStartInst.blockStart = getLoopName(START);
+    loopBlockStartInst.blockEnd = getLoopName(END);
     loopBlockStartInst.condition = node;
 
     INSTRUCTION *inst = malloc(sizeof(INSTRUCTION));
@@ -134,7 +135,8 @@ void addLoopStartInstruction(TREENODE *node)
 void addLoopEndInstruction()
 {
     LOOP_BLOCK_END_INST loopBlockEnd;
-    loopBlockEnd.blockName = getLoopName(END);
+    loopBlockEnd.blockStart = getLoopName(START);
+    loopBlockEnd.blockEnd = getLoopName(END);
 
     INSTRUCTION *inst = malloc(sizeof(INSTRUCTION));
     inst->instruction_type = LOOP_BLOCK_END;
@@ -217,13 +219,13 @@ void displayInitializationInsruction(INITIALIZE_INST instruction)
 void displayLoopStartInsruction(LOOP_BLOCK_START_INST instruction)
 {
 
-    printf("%s \n", instruction.blockName);
+    printf("%s \n", instruction.blockStart);
     displayTree(instruction.condition, printChar);
 }
 
 void displayLoopEndInsruction(LOOP_BLOCK_END_INST instruction)
 {
-    printf("%s \n", instruction.blockName);
+    printf("%s \n", instruction.blockStart);
 }
 
 void displayConditionStartInsruction(CONDITION_BLOCK_START_INST instruction)

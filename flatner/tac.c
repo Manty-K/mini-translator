@@ -183,17 +183,17 @@ void displayTacQueue()
         if (tacVal->tacType == ZERO_OP)
         {
 
-            appendFile("%s = %s\n", tacVal->tac->tac0.result, tacVal->tac->tac0.identifier);
+            appendFile("%s = %s;\n", tacVal->tac->tac0.result, tacVal->tac->tac0.identifier);
         }
         if (tacVal->tacType == ONE_OP)
         {
 
-            appendFile("%s = %s%s\n", tacVal->tac->tac1.result, tacVal->tac->tac1.op, tacVal->tac->tac1.identifier);
+            appendFile("%s = %s%s;\n", tacVal->tac->tac1.result, tacVal->tac->tac1.op, tacVal->tac->tac1.identifier);
         }
         if (tacVal->tacType == TWO_OP)
         {
 
-            appendFile("%s = %s %s %s\n", tacVal->tac->tac2.result, tacVal->tac->tac2.firstIdentifier, tacVal->tac->tac2.op, tacVal->tac->tac2.secondIdentifier);
+            appendFile("%s = %s %s %s;\n", tacVal->tac->tac2.result, tacVal->tac->tac2.firstIdentifier, tacVal->tac->tac2.op, tacVal->tac->tac2.secondIdentifier);
         }
     }
 }

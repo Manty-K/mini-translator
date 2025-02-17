@@ -190,6 +190,19 @@ void processConditions()
     }
 }
 
+void processLoops()
+{
+
+    int loopInstructionCount = getArraySize(loopArray);
+
+    for (int i = 0; i < loopInstructionCount; i++)
+    {
+        INSTRUCTION *loopInst = getElementArray(loopArray, i);
+
+        traverseChangeScope(loopInst->data.conditionStart.condition, loopInst->scope, loopInst->lineNo);
+    }
+}
+
 void processPrint()
 {
     int printCount = getArraySize(printArray);
