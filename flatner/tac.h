@@ -1,5 +1,10 @@
 #ifndef TAC_H
 #include "../data-structures/tree/tree.h"
+typedef struct generatedVariable
+{
+    int type;
+    char *name;
+} GENERATED_VAR;
 
 typedef struct tac0
 {

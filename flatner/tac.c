@@ -5,11 +5,20 @@
 #include <stdio.h>
 #include <string.h>
 #include "output.h"
+
 QUEUE *tacQueue;
 
 char *uniqueVar;
 
 int variableName = 1;
+
+QUEUE *extraVariables;
+
+void initializeExtraVariableQueue()
+{
+    extraVariables = createQueue();
+}
+char *typeIntToString(int type);
 
 int isPresent(char *str, char **list, int count)
 {
@@ -69,11 +78,18 @@ char *getTempVarName()
     char *varName = malloc(getIntLength(variableName) + 2);
     sprintf(varName, "%s%d", uniqueVar, variableName);
     variableName++;
+
+    GENERATED_VAR *generatedVariable = malloc(sizeof(GENERATED_VAR));
+    generatedVariable->type = 0;
+    generatedVariable->name = varName;
+
+    enqueue(extraVariables, generatedVariable);
     return varName;
 }
 
 void traverseGenerate(TREENODE *node, char *result)
 {
+
     if (node == NULL)
     {
         return;
@@ -138,7 +154,6 @@ void traverseGenerate(TREENODE *node, char *result)
     }
 
     enqueue(tacQueue, tacval);
-    tacQueue;
 }
 
 void generateTACFromTree(char *indentifier, TREENODE *node)
@@ -147,9 +162,19 @@ void generateTACFromTree(char *indentifier, TREENODE *node)
     tacQueue = createQueue();
     traverseGenerate(node, indentifier);
 }
+void appendExtraVariabels()
+{
+    while (!isEmptyQueue(extraVariables))
+    {
+        GENERATED_VAR *generatedVariable = (GENERATED_VAR *)dequeue(extraVariables);
+        appendFile("%s %s;\n", typeIntToString(generatedVariable->type), generatedVariable->name);
+    }
+}
 
 void displayTacQueue()
 {
+
+    appendExtraVariabels();
 
     while (!isEmptyQueue(tacQueue))
     {

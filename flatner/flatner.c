@@ -13,6 +13,7 @@ typedef struct
 } BLOCK;
 
 BLOCK block;
+void initializeExtraVariableQueue();
 
 void programStart()
 {
@@ -20,6 +21,7 @@ void programStart()
     appendFile("/*Program Start*/\n");
     initializeBlockInfo();
     initializeStatement();
+    initializeExtraVariableQueue();
 }
 
 void bodyStart()
