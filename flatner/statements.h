@@ -50,8 +50,8 @@ typedef struct conditionBlockEndInst
 // Print
 typedef struct printInst
 {
-
     char *data;
+    char *postfix;
 } PRINT_INST;
 
 // Merging all
@@ -91,6 +91,7 @@ typedef struct instruction
 void initializeStatement();
 void addDeclareInstruction(int type, char *identifier);
 int typeStringToint(char *str);
+char *typeIntToString(int type);
 void displayInstructionArray();
 void addInitializeInstruction(char *label, TREENODE *node);
 void addLoopStartInstruction(TREENODE *node);

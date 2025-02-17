@@ -110,6 +110,7 @@ void processPrint()
                 if (is_child(inst->scope, pinst->scope))
                 {
                     printf("%s at line %d can be taken\n", inst->data.declare.identifier, inst->lineNo);
+                    pinst->data.print.postfix = inst->scope;
                     found = 1;
                     break;
                 }

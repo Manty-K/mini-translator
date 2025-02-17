@@ -4,6 +4,7 @@
 #include <stdlib.h>
 #include "output.h"
 #include "instructions_processing.h"
+#include "exporter.h"
 
 typedef struct
 {
@@ -24,7 +25,7 @@ void programStart()
 void bodyStart()
 {
 
-    appendFile("/*Body Start*/\n");
+    // appendFile("/*Body Start*/\n");
 
     blockOpen();
 }
@@ -33,13 +34,15 @@ void bodyEnd()
 {
     blockClosed();
 
-    appendFile("/*Body End*/\n");
+    // appendFile("/*Body End*/\n");
 }
 
 void programEnd()
 {
     // displayInstructionArray();
     processInstructions();
+
+    exportFile();
 
     appendFile("/*Program End*/\n");
     closeOutfile();
