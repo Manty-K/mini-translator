@@ -7,6 +7,8 @@ enum loopType
 
 char *getLoopName(int type);
 
-void incrementLoopCount();
+void loopOpen();
 
-void decrementLoopCount();
+void loopClose();
+
+void initializeLoopStack();

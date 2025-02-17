@@ -112,7 +112,7 @@ void addInitializeInstruction(char *label, TREENODE *node)
 
 void addLoopStartInstruction(TREENODE *node)
 {
-    incrementLoopCount();
+    loopOpen();
 
     LOOP_BLOCK_START_INST loopBlockStartInst;
     loopBlockStartInst.blockStart = getLoopName(START);
@@ -146,7 +146,7 @@ void addLoopEndInstruction()
     inst->lineNo = lineNo;
     lineNo++;
     appendArray(instructionArray, inst);
-    decrementLoopCount();
+    loopClose();
 }
 
 void addConditionStartInstruction(TREENODE *node)

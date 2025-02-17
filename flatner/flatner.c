@@ -20,6 +20,7 @@ void programStart()
     openOutfile();
     initializeBlockInfo();
     initializeStatement();
+    initializeLoopStack();
     initializeExtraVariableQueue();
 }
 

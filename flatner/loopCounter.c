@@ -2,22 +2,34 @@
 #include "loopCounter.h"
 #include <stdlib.h>
 #include <stdio.h>
+#include "../data-structures/stack/stack.h"
 int loopCount = 0;
+
+STACK *loopStack;
+
+void initializeLoopStack()
+{
+
+    loopStack = createStack();
+}
 
 char *getLoopName(int type)
 {
-    char *varName = malloc(getIntLength(loopCount) + 2);
-    // char *varName = calloc(40, 1);
-    sprintf(varName, "l%s%d", type == START ? "srt" : "stp", loopCount);
+    int c = *(int *)peekStack(loopStack);
+    char *varName = malloc(getIntLength(c) + 2);
+    sprintf(varName, "l%s%d", type == START ? "srt" : "stp", c);
     return varName;
 }
 
-void incrementLoopCount()
+void loopOpen()
 {
+    int *myint = (int *)malloc(sizeof(int));
+    *myint = loopCount;
+    pushStack(loopStack, myint);
     loopCount++;
 }
 
-void decrementLoopCount()
+void loopClose()
 {
-    loopCount--;
+    popStack(loopStack);
 }
