@@ -87,6 +87,108 @@ char is_child(const char *parent, const char *child)
     return 0;
 }
 
+char *appendStrings(const char *str1, const char *str2)
+{
+    if (!str1)
+        str1 = "";
+    if (!str2)
+        str2 = "";
+
+    size_t len1 = strlen(str1);
+    size_t len2 = strlen(str2);
+
+    char *result = (char *)malloc(len1 + len2 + 1);
+    if (!result)
+    {
+        fprintf(stderr, "Memory allocation failed!\n");
+        exit(1);
+    }
+
+    strcpy(result, str1);
+    strcat(result, str2);
+
+    return result;
+}
+
+void traverseChangeScope(TREENODE *tree, char *currentScope, unsigned int lineNo)
+{
+
+    if (isLabel((char *)tree->data))
+    {
+        int found = 0;
+        int preindex = getIndexOfPrevDeclaration(lineNo);
+
+        for (int j = preindex; j >= 0; j--)
+        {
+            INSTRUCTION *inst = ((INSTRUCTION *)getElementArray(declareArray, j));
+
+            if (!strcmp(inst->data.declare.identifier, tree->data))
+            {
+
+                if (is_child(inst->scope, currentScope))
+                {
+                    tree->data = appendStrings(tree->data, inst->scope);
+                    printf("new spope %s\n", (char *)tree->data);
+                    found = 1;
+                    break;
+                }
+            }
+        }
+        if (!found)
+        {
+            fprintf(stderr, "'%s' not declared (Instruction no: %d).\n", (char *)tree->data, lineNo);
+            exit(1);
+        }
+    }
+
+    for (int i = 0; i < tree->childCount; i++)
+    {
+
+        traverseChangeScope(tree->children[i], currentScope, lineNo);
+    }
+}
+
+void processInitialize()
+{
+
+    int initializeInstrictionCount = getArraySize(initializeArray);
+
+    for (int i = 0; i < initializeInstrictionCount; i++)
+    {
+        int found = 0;
+        INSTRUCTION *inst = getElementArray(initializeArray, i);
+
+        INITIALIZE_INST initInst = inst->data.initialize;
+
+        traverseChangeScope(initInst.data, inst->scope, inst->lineNo);
+
+        int preindex = getIndexOfPrevDeclaration(inst->lineNo);
+
+        for (int j = preindex; j >= 0; j--)
+        {
+            INSTRUCTION *dinst = ((INSTRUCTION *)getElementArray(declareArray, j));
+
+            if (!strcmp(dinst->data.declare.identifier, initInst.label))
+            {
+
+                if (is_child(dinst->scope, inst->scope))
+                {
+                    inst->data.initialize.label = appendStrings(initInst.label, dinst->scope);
+                    printf("new spope init %s\n", (char *)inst->data.initialize.label);
+
+                    found = 1;
+                    break;
+                }
+            }
+        }
+        if (!found)
+        {
+            fprintf(stderr, "'%s' not declared (Instruction no: %d).\n", initInst.label, inst->lineNo);
+            exit(1);
+        }
+    }
+}
+
 void processPrint()
 {
     int printCount = getArraySize(printArray);
@@ -136,6 +238,7 @@ void processInstructions()
 {
 
     processPrint();
+    processInitialize();
     // generateUnique();
 
     // printf("Uniqie = %s\n", uniqueLabel);

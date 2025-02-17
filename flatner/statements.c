@@ -107,7 +107,7 @@ void addInitializeInstruction(char *label, TREENODE *node)
     // -- filling initialize array separately
 
     INSTRUCTION *lastInst = getElementArray(instructionArray, getArraySize(instructionArray) - 1);
-    appendArray(initializeArray, &(lastInst->data.initialize));
+    appendArray(initializeArray, lastInst);
 }
 
 void addLoopStartInstruction(TREENODE *node)
@@ -128,7 +128,7 @@ void addLoopStartInstruction(TREENODE *node)
     // -- filling loop array separately
 
     INSTRUCTION *lastInst = getElementArray(instructionArray, getArraySize(instructionArray) - 1);
-    appendArray(loopArray, &(lastInst->data.loopStart));
+    appendArray(loopArray, lastInst);
 }
 
 void addLoopEndInstruction()
@@ -163,7 +163,7 @@ void addConditionStartInstruction(TREENODE *node)
     // -- filling condition array separately
 
     INSTRUCTION *lastInst = getElementArray(instructionArray, getArraySize(instructionArray) - 1);
-    appendArray(conditionArray, &(lastInst->data.conditionStart));
+    appendArray(conditionArray, lastInst);
 }
 
 void addPrintInstruction(char *data)
