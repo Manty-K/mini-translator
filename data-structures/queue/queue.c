@@ -87,9 +87,13 @@ void *peekQueue(QUEUE *q)
 
 void freeQueue(QUEUE *q)
 {
+    if (q == NULL)
+        return;
+
     while (!isEmptyQueue(q))
     {
         dequeue(q);
     }
+
     free(q);
 }

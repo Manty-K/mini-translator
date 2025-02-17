@@ -4,6 +4,7 @@
 #include "statements.h"
 #include "instructions_processing.h"
 #include "unique_generator.h"
+// #include "tac.h"
 #include "utils.h"
 #include <string.h>
 extern ARRAY *instructionArray;
@@ -14,19 +15,8 @@ extern ARRAY *loopArray;
 extern ARRAY *conditionArray;
 extern ARRAY *printArray;
 
-char *uniqueLabel;
-
-int variableNum = 0;
-
 char **labelsArray;
-
-char *getTempVarName()
-{
-    char *varName = malloc(getIntLength(variableNum) + 2);
-    sprintf(varName, "%s%d", uniqueLabel, variableNum);
-    variableNum++;
-    return varName;
-}
+void setUniqueVar(char **list, int count);
 
 void fillLabelsArray()
 {
@@ -36,7 +26,7 @@ void fillLabelsArray()
         INSTRUCTION *inst = getElementArray(declareArray, i);
 
         DECLARE_INST decl = inst->data.declare;
-        labelsArray[i] = decl.identifier;
+        labelsArray[i] = strdup(decl.identifier);
     }
 }
 int getIndexOfPrevDeclaration(int target)
@@ -128,7 +118,6 @@ void traverseChangeScope(TREENODE *tree, char *currentScope, unsigned int lineNo
                 if (is_child(inst->scope, currentScope))
                 {
                     tree->data = appendStrings(tree->data, inst->scope);
-                    printf("new spope %s\n", (char *)tree->data);
                     found = 1;
                     break;
                 }
@@ -174,7 +163,6 @@ void processInitialize()
                 if (is_child(dinst->scope, inst->scope))
                 {
                     inst->data.initialize.label = appendStrings(initInst.label, dinst->scope);
-                    printf("new spope init %s\n", (char *)inst->data.initialize.label);
 
                     found = 1;
                     break;
@@ -230,12 +218,14 @@ void generateUnique()
 {
     labelsArray = malloc(getArraySize(declareArray));
     fillLabelsArray();
-    uniqueLabel = getUniqueString(labelsArray, getArraySize(declareArray));
-    free(labelsArray);
+    setUniqueVar(labelsArray, getArraySize(declareArray));
+    // uniqueLabel = getUniqueString(labelsArray, getArraySize(declareArray));
+    //   free(labelsArray);
 }
 
 void processInstructions()
 {
+    generateUnique();
 
     processPrint();
     processInitialize();

@@ -5,6 +5,11 @@
 #include "../data-structures/array/array.h"
 #include "output.h"
 #include <stdlib.h>
+
+void setUniqueVar(char **list, int count);
+void generateTACFromTree(char *indentifier, TREENODE *node);
+void displayTacQueue();
+// #include "tac.h"
 extern ARRAY *instructionArray;
 
 void exportDeclareInsruction(INSTRUCTION *instruction)
@@ -12,12 +17,12 @@ void exportDeclareInsruction(INSTRUCTION *instruction)
     appendFile("%s %s%s;\n", typeIntToString(instruction->data.declare.varType), instruction->data.declare.identifier, instruction->scope);
 }
 
-void exportInitializationInsruction(INITIALIZE_INST instruction)
+void exportInitializationInsruction(INSTRUCTION *instruction)
 {
-
-    // printf("%s\n", instruction.label);
-    // exportTree(instruction.data, printChar);
+    generateTACFromTree(instruction->data.initialize.label, instruction->data.initialize.data);
+    displayTacQueue();
 }
+
 void exportLoopStartInsruction(LOOP_BLOCK_START_INST instruction)
 {
 
@@ -54,7 +59,7 @@ void exportInstruction(INSTRUCTION *inst)
         exportDeclareInsruction(inst);
         break;
     case INITIALIZE:
-        exportInitializationInsruction(inst->data.initialize);
+        exportInitializationInsruction(inst);
         break;
     case LOOP_BLOCK_START:
         exportLoopStartInsruction(inst->data.loopStart);

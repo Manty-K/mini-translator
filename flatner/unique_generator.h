@@ -1,1 +1,1 @@
-char *getUniqueString(char **list, int count);
+// char *getUniqueString(char **list, int count);

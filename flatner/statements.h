@@ -1,6 +1,7 @@
 
-#include "../data-structures/tree/tree.h"
 #ifndef STATEMENTS_H
+#include "../data-structures/tree/tree.h"
+
 enum varType
 {
     INT_TYPE,

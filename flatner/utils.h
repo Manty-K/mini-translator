@@ -1,4 +1,4 @@
-int getIntLength(int num);
+int getIntLength(unsigned int num);
 
 char isOperator(char *data);
 

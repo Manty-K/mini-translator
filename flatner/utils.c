@@ -1,15 +1,17 @@
 #include "utils.h"
 #include <ctype.h>
 #include <string.h>
-int getIntLength(int num)
+int getIntLength(unsigned int val)
 {
-    if (num == 0)
+    if (val == 0)
         return 1;
 
     int length = 0;
-    while (num)
+    int v = val;
+
+    while (v > 0)
     {
-        num /= 10;
+        v /= 10;
         length++;
     }
     return length;
