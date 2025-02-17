@@ -50,12 +50,18 @@ typedef struct conditionBlockEndInst
 
 } CONDITION_BLOCK_END_INST;
 
-// Print
+// Print Label
 typedef struct printInst
 {
     char *data;
     char *postfix;
 } PRINT_INST;
+
+// Print String
+typedef struct printSInst
+{
+    char *data;
+} PRINTS_INST;
 
 // Merging all
 typedef union instructionData
@@ -67,6 +73,7 @@ typedef union instructionData
     CONDITION_BLOCK_START_INST conditionStart;
     CONDITION_BLOCK_END_INST conditionBlockEnd;
     PRINT_INST print;
+    PRINTS_INST printS;
 
 } INSTRUCTION_DATA;
 
@@ -78,7 +85,8 @@ enum instructionType
     LOOP_BLOCK_END,
     CONDITION_BLOCK_START,
     CONDITION_BLOCK_END,
-    PRINTS,
+    PRINT_LABEL,
+    PRINT_STR,
 
 };
 
@@ -102,5 +110,6 @@ void addLoopEndInstruction();
 void addConditionStartInstruction(TREENODE *node);
 void addConditionEndInstruction();
 void addPrintInstruction(char *data);
+void addPrintSInstruction(char *data);
 
 #endif

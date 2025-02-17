@@ -8,3 +8,5 @@ enum loopType
 char *getLoopName(int type);
 
 void incrementLoopCount();
+
+void decrementLoopCount();

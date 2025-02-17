@@ -60,6 +60,10 @@ void exportPrintInsruction(PRINT_INST instruction)
 {
     appendFile("printf(\"%%d\",%s%s);\n", instruction.data, instruction.postfix);
 }
+void exportPrintSInsruction(PRINTS_INST instruction)
+{
+    appendFile("printf(\"%s\");\n", instruction.data);
+}
 
 void exportInstruction(INSTRUCTION *inst)
 {
@@ -83,8 +87,11 @@ void exportInstruction(INSTRUCTION *inst)
     case CONDITION_BLOCK_END:
         exportConditionEndInsruction(inst);
         break;
-    case PRINTS:
+    case PRINT_LABEL:
         exportPrintInsruction(inst->data.print);
+        break;
+    case PRINT_STR:
+        exportPrintSInsruction(inst->data.printS);
         break;
     default:
         fprintf(stderr, "Invalid Type %d\n", inst->instruction_type);
@@ -93,11 +100,25 @@ void exportInstruction(INSTRUCTION *inst)
     }
 }
 
+void exportStartContent()
+{
+
+    appendFile("#include<stdio.h>\n int main(){\n");
+}
+
+void exportEndContent()
+{
+
+    appendFile("return 0;\n }");
+}
+
 void exportFile()
 {
+    // exportStartContent();
     for (int i = 0; i < instructionArray->filled; i++)
     {
         INSTRUCTION *inst = getElementArray(instructionArray, i);
         exportInstruction(inst);
     }
+    // exportEndContent();
 }

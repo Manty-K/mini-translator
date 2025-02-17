@@ -18,7 +18,6 @@ void initializeExtraVariableQueue();
 void programStart()
 {
     openOutfile();
-    appendFile("/*Program Start*/\n");
     initializeBlockInfo();
     initializeStatement();
     initializeExtraVariableQueue();
@@ -27,16 +26,12 @@ void programStart()
 void bodyStart()
 {
 
-    // appendFile("/*Body Start*/\n");
-
     blockOpen();
 }
 
 void bodyEnd()
 {
     blockClosed();
-
-    // appendFile("/*Body End*/\n");
 }
 
 void programEnd()
@@ -46,6 +41,5 @@ void programEnd()
 
     exportFile();
 
-    appendFile("/*Program End*/\n");
     closeOutfile();
 }

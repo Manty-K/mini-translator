@@ -16,3 +16,8 @@ void incrementLoopCount()
 {
     loopCount++;
 }
+
+void decrementLoopCount()
+{
+    loopCount--;
+}

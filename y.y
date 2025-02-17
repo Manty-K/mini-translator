@@ -13,7 +13,7 @@
 %}
 
 
-%token <s> INT FLOAT BOOL NUMBER LABEL ASG TERMINATOR  IF WHILE LCURL RCURL  LPAREN RPAREN LE ME LT MT EQ NE PLUS MINUS MUL DIV AND OR NOT PRINT STRING COMMA
+%token <s> INT FLOAT BOOL NUMBER LABEL ASG TERMINATOR  IF WHILE LCURL RCURL  LPAREN RPAREN LE ME LT MT EQ NE PLUS MINUS MUL DIV AND OR NOT PRINT STRING COMMA PRINTS
 
 %type <s> type cmp logicB term factor
 
@@ -29,7 +29,7 @@ stmts: stmt stmts
     |
     ;
 
-stmt: decl | assign | loop | cond | print
+stmt: decl | assign | loop | cond | print | printS
 
 decl: type LABEL TERMINATOR  {addDeclareInstruction(typeStringToint($1), $2);};
 
@@ -72,6 +72,8 @@ type: INT | FLOAT | BOOL;
 body: {bodyStart();} LCURL stmts RCURL {bodyEnd();} ;
 
 print: PRINT LPAREN LABEL RPAREN TERMINATOR  {addPrintInstruction($3);};
+
+printS : PRINTS  LPAREN STRING RPAREN TERMINATOR  {addPrintSInstruction($3);};
 
 
 // printContent: STRING                    {addPrintInstruction($1);}

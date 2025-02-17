@@ -112,6 +112,7 @@ void addInitializeInstruction(char *label, TREENODE *node)
 
 void addLoopStartInstruction(TREENODE *node)
 {
+    incrementLoopCount();
 
     LOOP_BLOCK_START_INST loopBlockStartInst;
     loopBlockStartInst.blockStart = getLoopName(START);
@@ -145,7 +146,7 @@ void addLoopEndInstruction()
     inst->lineNo = lineNo;
     lineNo++;
     appendArray(instructionArray, inst);
-    incrementLoopCount();
+    decrementLoopCount();
 }
 
 void addConditionStartInstruction(TREENODE *node)
@@ -175,7 +176,7 @@ void addPrintInstruction(char *data)
     printInst.data = data;
 
     INSTRUCTION *inst = malloc(sizeof(INSTRUCTION));
-    inst->instruction_type = PRINTS;
+    inst->instruction_type = PRINT_LABEL;
     inst->data.print = printInst;
     inst->scope = getBlockString();
     inst->lineNo = lineNo;
@@ -185,6 +186,20 @@ void addPrintInstruction(char *data)
     // -- filling loop array separately
     INSTRUCTION *lastInst = getElementArray(instructionArray, getArraySize(instructionArray) - 1);
     appendArray(printArray, lastInst);
+}
+
+void addPrintSInstruction(char *data)
+{
+    PRINTS_INST printInst;
+    printInst.data = data;
+
+    INSTRUCTION *inst = malloc(sizeof(INSTRUCTION));
+    inst->instruction_type = PRINT_STR;
+    inst->data.printS = printInst;
+    inst->scope = getBlockString();
+    inst->lineNo = lineNo;
+    lineNo++;
+    appendArray(instructionArray, inst);
 }
 
 void addConditionEndInstruction()
@@ -269,7 +284,7 @@ void displayInstruction(INSTRUCTION *inst)
     case CONDITION_BLOCK_END:
         displayConditionEndInsruction(inst->data.conditionBlockEnd);
         break;
-    case PRINTS:
+    case PRINT_LABEL:
         displayPrintInsruction(inst->data.print);
         break;
     default:
