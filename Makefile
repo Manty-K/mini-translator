@@ -1,10 +1,11 @@
 CC = gcc
 CFLAGS =  -g # -fsanitize=address 
 DEPS = flatner/flatner.c flatner/block_info.c flatner/exporter.c flatner/tac.c flatner/instructions_processing.c flatner/expression.c flatner/output.c flatner/utils.c flatner/loopCounter.c flatner/statements.c data-structures/array/array.c data-structures/tree/tree.c data-structures/stack/stack.c data-structures/queue/queue.c 
-all: output.txt
+all: program.o
+	./program.o
 
-output.txt: e.o input.txt
-	./e.o -i input.txt -o output.txt
+output.c: e.o input.txt
+	./e.o -i input.txt -o output.c
 
 program.o: output.c
 	gcc output.c -o program.o

@@ -114,11 +114,11 @@ void exportEndContent()
 
 void exportFile()
 {
-    // exportStartContent();
+    exportStartContent();
     for (int i = 0; i < instructionArray->filled; i++)
     {
         INSTRUCTION *inst = getElementArray(instructionArray, i);
         exportInstruction(inst);
     }
-    // exportEndContent();
+    exportEndContent();
 }
