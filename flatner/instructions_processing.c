@@ -199,7 +199,7 @@ void processLoops()
     {
         INSTRUCTION *loopInst = getElementArray(loopArray, i);
 
-        traverseChangeScope(loopInst->data.conditionStart.condition, loopInst->scope, loopInst->lineNo);
+        traverseChangeScope(loopInst->data.loopStart.condition, loopInst->scope, loopInst->lineNo);
     }
 }
 
@@ -255,6 +255,7 @@ void processInstructions()
     processPrint();
     processInitialize();
     processConditions();
+    processLoops();
     // generateUnique();
 
     // printf("Uniqie = %s\n", uniqueLabel);
