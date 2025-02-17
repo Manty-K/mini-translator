@@ -71,18 +71,16 @@ type: INT | FLOAT | BOOL;
 
 body: {bodyStart();} LCURL stmts RCURL {bodyEnd();} ;
 
-print: PRINT LPAREN pcont RPAREN TERMINATOR 
+print: PRINT LPAREN printContent RPAREN TERMINATOR 
         
 pcont : LABEL                                    {addPrintInstruction($1);}
         | STRING                                    {addPrintSInstruction($1);}
         ;
 
-// printContent: STRING                    {addPrintInstruction($1);}
-//     | STRING variadicPrint              {addPrintInstruction($1);}           
-//     ;
+printContent: pcont                  
+    | pcont COMMA printContent                      
+    ;
 
-// variadicPrint:COMMA LABEL
-//     | COMMA LABEL variadicPrint
 
 cmp: LT|MT|LE|ME|EQ|NE;
 
