@@ -9,6 +9,7 @@
 void setUniqueVar(char **list, int count);
 void generateTACFromTree(char *indentifier, TREENODE *node);
 void displayTacQueue();
+char *getTempVarName();
 // #include "tac.h"
 extern ARRAY *instructionArray;
 
@@ -35,15 +36,18 @@ void exportLoopEndInsruction(LOOP_BLOCK_END_INST instruction)
     // printf("%s \n", instruction.blockName);
 }
 
-void exportConditionStartInsruction(CONDITION_BLOCK_START_INST instruction)
+void exportConditionStartInsruction(INSTRUCTION *instruction)
 {
-    // printf("if\n");
+    instruction->data.conditionStart.conditioVar = getTempVarName();
+    generateTACFromTree(instruction->data.conditionStart.conditioVar, instruction->data.conditionStart.condition);
+    displayTacQueue();
+    appendFile("if(%s){\n", instruction->data.conditionStart.conditioVar);
     // exportTree(instruction.condition, printChar);
 }
 
-void exportConditionEndInsruction(CONDITION_BLOCK_END_INST instruction)
+void exportConditionEndInsruction(INSTRUCTION *instruction)
 {
-    // printf("end if\n");
+    appendFile("}\n");
 }
 
 void exportPrintInsruction(PRINT_INST instruction)
@@ -68,10 +72,10 @@ void exportInstruction(INSTRUCTION *inst)
         exportLoopEndInsruction(inst->data.loopEnd);
         break;
     case CONDITION_BLOCK_START:
-        exportConditionStartInsruction(inst->data.conditionStart);
+        exportConditionStartInsruction(inst);
         break;
     case CONDITION_BLOCK_END:
-        exportConditionEndInsruction(inst->data.conditionBlockEnd);
+        exportConditionEndInsruction(inst);
         break;
     case PRINTS:
         exportPrintInsruction(inst->data.print);

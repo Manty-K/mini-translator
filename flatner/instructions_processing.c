@@ -177,6 +177,19 @@ void processInitialize()
     }
 }
 
+void processConditions()
+{
+
+    int conditionInstrictionCount = getArraySize(conditionArray);
+
+    for (int i = 0; i < conditionInstrictionCount; i++)
+    {
+        INSTRUCTION *condInst = getElementArray(conditionArray, i);
+
+        traverseChangeScope(condInst->data.conditionStart.condition, condInst->scope, condInst->lineNo);
+    }
+}
+
 void processPrint()
 {
     int printCount = getArraySize(printArray);
@@ -199,7 +212,6 @@ void processPrint()
 
                 if (is_child(inst->scope, pinst->scope))
                 {
-                    printf("%s at line %d can be taken\n", inst->data.declare.identifier, inst->lineNo);
                     pinst->data.print.postfix = inst->scope;
                     found = 1;
                     break;
@@ -229,6 +241,7 @@ void processInstructions()
 
     processPrint();
     processInitialize();
+    processConditions();
     // generateUnique();
 
     // printf("Uniqie = %s\n", uniqueLabel);
