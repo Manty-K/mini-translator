@@ -1,5 +1,4 @@
-Flatten Loops
+# Simple Language Translator
 
-## TODO
+This program translate *C like code* to **C code** without loops.
 
-- Remove INTARRAY dependency and make it depend on generay array.
