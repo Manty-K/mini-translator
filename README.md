@@ -4,62 +4,63 @@ This program translate *C like code* to **C code** without loops.
 
 ## Input
 ```
-int a;
-int b;
-int fibCount;
-int temp;
 int N;
-N = 20;
+int k;
+int fact;
+int factNum;
 
-a = 0;
-b = 1;
-fibCount = 1;
+N = 10;
+factNum = 1;
 
-print("Fibonacci sequence up to ", N, " terms: ");
-    
-while (fibCount <= N) {
-    print(a, " ");
-    temp = a + b;
-    a = b;
-    b = temp;
-    fibCount = fibCount + 1;
+while (factNum <= N) {
+    fact = 1;
+    k = 1;
+
+    while (k <= factNum) {
+        fact = fact * k;
+        k = k + 1;
+    }
+
+    print("Factorial of ", factNum, " is: ", fact, "\n");
+    factNum = factNum + 1;
 }
-
-print("\n");
 ```
 
-## Ouptput
+## Output
 ```c
 #include <stdio.h>
 int main()
 {
-	int a;
-	int b;
-	int fibCount;
-	int temp;
 	int N;
-	N = 20;
-	a = 0;
-	b = 1;
-	fibCount = 1;
-	printf("Fibonacci sequence up to ");
-	printf("%d", N);
-	printf(" terms: ");
+	int k;
+	int fact;
+	int factNum;
+	N = 10;
+	factNum = 1;
 lsrt0:
 	int a1;
-	a1 = fibCount <= N;
+	a1 = factNum <= N;
 	if (!a1)
 		goto lstp0;
-	printf("%d", a);
-	printf(" ");
-	temp = a + b;
-	a = b;
-	b = temp;
-	fibCount = fibCount + 1;
+	fact = 1;
+	k = 1;
+lsrt1:
+	int a2;
+	a2 = k <= factNum;
+	if (!a2)
+		goto lstp1;
+	fact = fact * k;
+	k = k + 1;
+	goto lsrt1;
+lstp1:
+	printf("Factorial of ");
+	printf("%d", factNum);
+	printf(" is: ");
+	printf("%d", fact);
+	printf("\n");
+	factNum = factNum + 1;
 	goto lsrt0;
 lstp0:
-	printf("\n");
 	return 0;
 }
-
 ```
